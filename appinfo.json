@@ -14,6 +14,9 @@
     },
     "sdkVersion": "3",
     "shortName": "Squeebble",
+    "targetPlatforms": [
+        "basalt"
+    ],
     "uuid": "4907d028-e81c-484d-ad49-ddc4864d6faf",
     "versionLabel": "1.0",
     "watchapp": {
