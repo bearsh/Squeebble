@@ -1,0 +1,22 @@
+{
+    "appKeys": {
+        "message": 1,
+        "status": 0
+    },
+    "capabilities": [
+        ""
+    ],
+    "companyName": "me@bearsh.org",
+    "longName": "Squeebble",
+    "projectType": "native",
+    "resources": {
+        "media": []
+    },
+    "sdkVersion": "3",
+    "shortName": "Squeebble",
+    "uuid": "4907d028-e81c-484d-ad49-ddc4864d6faf",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": false
+    }
+}
