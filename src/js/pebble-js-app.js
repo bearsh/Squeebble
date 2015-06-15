@@ -6,7 +6,7 @@ function SqueezeRequest(address, port) {
 
 	function handle(cb) {
 		var result = {};
-		if (req.readyState == 4) {
+		if (req.readyState == 4 && cb) {
 			if (req.status == 200) {
 				result = JSON.parse(req.responseText)
 //				debugger;
