@@ -157,15 +157,18 @@ function sendMessage() {
 	// also be called if your message send attempt times out.
 }
 
+function readyListener(event) {
+	squeeze_request = new SqueezeRequest(server_address, server_port);
+}
 
 // Called when JS is ready
-Pebble.addEventListener("ready",
-							function(e) {
-							});
+Pebble.addEventListener("ready", readyListener);
+
+
+function appmessageListener(event) {
+	console.log("Received Status: " + e.payload.status);
+	sendMessage();
+}
 
 // Called when incoming message from the Pebble is received
-Pebble.addEventListener("appmessage",
-							function(e) {
-								console.log("Received Status: " + e.payload.status);
-								sendMessage();
-							});
+Pebble.addEventListener("appmessage", appmessageListener);
