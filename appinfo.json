@@ -11,7 +11,28 @@
     "longName": "Squeebble",
     "projectType": "native",
     "resources": {
-        "media": []
+        "media": [
+            {
+                "type": "pbi",
+                "name": "IMG_VOLUME_DOWN",
+                "file": "volume_down.png"
+            },
+            {
+                "type": "pbi",
+                "name": "IMG_VOLUME_UP",
+                "file": "volume_up.png"
+            },
+            {
+                "type": "pbi",
+                "name": "IMG_PLAY",
+                "file": "play.png"
+            },
+                        {
+                "type": "pbi",
+                "name": "IMG_PAUSE",
+                "file": "pause.png"
+            }
+        ]
     },
     "sdkVersion": "3",
     "shortName": "Squeebble",
