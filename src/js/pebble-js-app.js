@@ -142,7 +142,14 @@ function SqueezePlayer(playerId, name, request_server) {
 }
 
 
+var server_address = "192.168.11.140";
+var server_port = 9000;
+var squeeze_request = null;
+var player = null;
 
+function commandHandler(cmd) {
+	
+}
 
 
 // Function to send a message to the Pebble using AppMessage API
@@ -158,7 +165,14 @@ function sendMessage() {
 }
 
 function readyListener(event) {
+	console.log("Ready");
 	squeeze_request = new SqueezeRequest(server_address, server_port);
+	console.log("Request object created");
+
+
+
+	player = new SqueezePlayer("00:04:20:28:99:14", "Squeeze", squeeze_request)
+	console.log("Player object created: " + player);
 }
 
 // Called when JS is ready
@@ -166,8 +180,26 @@ Pebble.addEventListener("ready", readyListener);
 
 
 function appmessageListener(event) {
-	console.log("Received Status: " + e.payload.status);
-	sendMessage();
+	console.log("Received Status: " + event.payload.status);
+	console.log("Received Cmd: " + event.payload.command);
+
+	switch(event.payload.command) {
+		case 0:
+			console.log("status...");
+			player.getStatus(function(e) {console.log(JSON.stringify(e))})
+			break;
+		case 1:
+			console.log("play...");
+			player.play(function(e) {console.log(JSON.stringify(e))})
+			break;
+		case 2:
+			console.log("pause...");
+			player.pause(function(e) {console.log(JSON.stringify(e))})
+			break;
+		default:
+			console.log("???...");
+	}
+	//sendMessage();
 }
 
 // Called when incoming message from the Pebble is received
