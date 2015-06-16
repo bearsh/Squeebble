@@ -3,6 +3,10 @@
 static Window* main_window;
 static ActionBarLayer* action_bar;
 static StatusBarLayer *status_bar;
+static GBitmap *bitmap_volume_up;
+static GBitmap *bitmap_volume_down;
+static GBitmap *bitmap_play;
+static GBitmap *bitmap_pause;
 
 // Key values for AppMessage Dictionary
 enum {
@@ -83,7 +87,7 @@ static void button_down_click_handler(ClickRecognizerRef recognizer, void *conte
 
 
 static void click_config_provider(void *context) {
-	window_single_click_subscribe(BUTTON_ID_DOWN, (ClickHandler) button_down_click_handler);
+	window_single_click_subscribe(BUTTON_ID_DOWN, button_down_click_handler);
 	window_single_click_subscribe(BUTTON_ID_SELECT, button_select_click_handler);
 	window_single_click_subscribe(BUTTON_ID_UP, button_up_click_handler);
 }
@@ -99,11 +103,9 @@ static void main_window_load(Window *window) {
 	// Set the click config provider:
 	action_bar_layer_set_click_config_provider(action_bar,
 			click_config_provider);
-
 	// Set the icons:
-	// The loading of the icons is omitted for brevity... See gbitmap_create_with_resource()
-//	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_UP, my_icon_previous, true);
-//	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_DOWN, my_icon_next, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_UP, bitmap_play, true);
+	action_bar_layer_set_icon_animated(action_bar, BUTTON_ID_DOWN, bitmap_pause, true);
 	// action_bar_layer_set_context(ActionBarLayer * action_bar, void * context)
 
 	status_bar = status_bar_layer_create();
@@ -125,6 +127,11 @@ static void main_window_unload(Window *window) {
 
 
 void init(void) {
+	bitmap_volume_down = gbitmap_create_with_resource(RESOURCE_ID_IMG_VOLUME_DOWN);
+	bitmap_volume_up = gbitmap_create_with_resource(RESOURCE_ID_IMG_VOLUME_UP);
+	bitmap_play = gbitmap_create_with_resource(RESOURCE_ID_IMG_PLAY);
+	bitmap_pause = gbitmap_create_with_resource(RESOURCE_ID_IMG_PAUSE);
+
 	main_window = window_create();
 	window_set_window_handlers(main_window,
 		(WindowHandlers) {
