@@ -2,7 +2,7 @@
 function SqueezeRequest(address, port) {
 	this.address = address;
 	this.port = (port !== undefined) ? port : 9000;
-	var req = new XMLHttpRequest();
+	var req;
 
 	function handle(cb) {
 		var result = {};
@@ -22,6 +22,7 @@ function SqueezeRequest(address, port) {
 		var p = '["' + player + '",' + '["' + params + '"]]';
 		var data = '{"id":1,"method":"slim.request","params":' + p + '}';
 		console.log('data: ' + data);
+		req = new XMLHttpRequest();
 		req.open('POST', 'http://' + this.address + ':' + this.port + '/jsonrpc.js', true);
 		req.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
 		req.onreadystatechange = function() { handle(callback) }
