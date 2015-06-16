@@ -11,6 +11,14 @@ enum {
 	COMMAND_KEY = 2,
 };
 
+enum squeeze_cmds {
+	SC_STATUS,
+	SC_PLAY,
+	SC_PAUSE,
+	SC_NEXT,
+	SC_PREV,
+};
+
 
 // Write message to buffer & send
 void send_message(void){
@@ -21,6 +29,15 @@ void send_message(void){
 	
 	dict_write_end(iter);
 	app_message_outbox_send();
+}
+
+void send_squeeze_cmd(enum squeeze_cmds cmd) {
+	DictionaryIterator *iter;
+	app_message_outbox_begin(&iter);
+	dict_write_uint8(iter, COMMAND_KEY, cmd);
+	dict_write_end(iter);
+	app_message_outbox_send();
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "message sent");
 }
 
 
@@ -40,16 +57,19 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 
 // Called when an incoming message from PebbleKitJS is dropped
 static void in_dropped_handler(AppMessageResult reason, void *context) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "dropped");
 }
 
 
 // Called when PebbleKitJS does not acknowledge receipt of a message
 static void out_failed_handler(DictionaryIterator *failed, AppMessageResult reason, void *context) {
+	APP_LOG(APP_LOG_LEVEL_DEBUG, "failed");
 }
 
 
 static void button_up_click_handler(ClickRecognizerRef recognizer, void *context) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Button UP");
+	send_squeeze_cmd(SC_PLAY);
 }
 
 static void button_select_click_handler(ClickRecognizerRef recognizer, void *context) {
@@ -58,6 +78,7 @@ static void button_select_click_handler(ClickRecognizerRef recognizer, void *con
 
 static void button_down_click_handler(ClickRecognizerRef recognizer, void *context) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Button DOWN");
+	send_squeeze_cmd(SC_PAUSE);
 }
 
 
@@ -120,7 +141,7 @@ void init(void) {
 
 	app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
 
-	send_message();
+	send_squeeze_cmd(SC_STATUS);
 }
 
 void deinit(void) {
