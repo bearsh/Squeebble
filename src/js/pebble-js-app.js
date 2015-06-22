@@ -8,7 +8,7 @@ function SqueezeRequest(address, port) {
 		var result = {};
 		if (req.readyState == 4 && cb) {
 			if (req.status == 200) {
-				result = JSON.parse(req.responseText)
+				result = JSON.parse(req.responseText);
 //				debugger;
 				result.ok = true;
 			} else {
@@ -25,10 +25,10 @@ function SqueezeRequest(address, port) {
 		req = new XMLHttpRequest();
 		req.open('POST', 'http://' + this.address + ':' + this.port + '/jsonrpc.js', true);
 		req.setRequestHeader("Content-type", "application/x-www-form-urlencoded; charset=UTF-8");
-		req.onreadystatechange = function() { handle(callback) }
+		req.onreadystatechange = function() { handle(callback); };
 		req.send(data);
 	};
-};
+}
 
 
 function SqueezePlayer(playerId, name, request_server) {
