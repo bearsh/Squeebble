@@ -19,7 +19,7 @@ function SqueezeRequest(address, port) {
 	}
 
 	this.request = function (player, params, callback) {
-		var p = '["' + player + '",' + '["' + params + '"]]';
+		var p = '["' + player + '",' + JSON.stringify(params) + ']';
 		var data = '{"id":1,"method":"slim.request","params":' + p + '}';
 		console.log('data: ' + data);
 		req = new XMLHttpRequest();
