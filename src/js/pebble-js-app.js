@@ -34,26 +34,27 @@ function SqueezeRequest(address, port) {
 function SqueezePlayer(playerId, name, request_server) {
 	this.playerId = playerId;
 	this.name = name;
-	var rs = request_server;
+	this.rs = request_server;
+	var self = this;
 
 	this.clearPlayList = function (callback) {
-		rs.request(playerId, ["playlist", "clear"], callback);
+		self.rs.request(playerId, ["playlist", "clear"], callback);
 	};
 
 	this.getMode = function (callback) {
-		rs.request(playerId, ["mode", "?"], callback);
+		self.rs.request(playerId, ["mode", "?"], callback);
 	};
 
 	this.setName = function (name, callback) {
-		rs.request(playerId, ["name", name], callback);
+		self.rs.request(playerId, ["name", name], callback);
 	};
 
 	this.getName = function (callback) {
-		rs.request(playerId, ["name", "?"], callback);
+		self.rs.request(playerId, ["name", "?"], callback);
 	};
 
 	this.getCurrentTitle = function (callback) {
-		rs.request(playerId, ["current_title", "?"], function (reply) {
+		self.rs.request(playerId, ["current_title", "?"], function (reply) {
 			if (reply.ok)
 				reply.result = reply.result._current_title;
 			callback(reply);
@@ -61,7 +62,7 @@ function SqueezePlayer(playerId, name, request_server) {
 	};
 
 	this.getCurrentRemoteMeta = function (callback) {
-		rs.request(playerId, ["status"], function (reply) {
+		self.rs.request(playerId, ["status"], function (reply) {
 			if (reply.ok)
 				reply.result = reply.result.remoteMeta;
 			callback(reply);
@@ -69,11 +70,11 @@ function SqueezePlayer(playerId, name, request_server) {
 	};
 
 	this.getStatus = function (callback) {
-		rs.request(playerId, ["status"], callback);
+		self.rs.request(playerId, ["status"], callback);
 	};
 
 	this.getStatusWithPlaylist = function (from, to, callback) {
-		rs.request(playerId, ["status", from, to], function (reply) {
+		self.rs.request(playerId, ["status", from, to], function (reply) {
 			if (reply.ok)
 				reply.result = reply.result;
 			callback(reply);
@@ -81,7 +82,7 @@ function SqueezePlayer(playerId, name, request_server) {
 	};
 
 	this.getPlaylist = function (from, to, callback) {
-		rs.request(playerId, ["status", from, to], function (reply) {
+		self.rs.request(playerId, ["status", from, to], function (reply) {
 			if (reply.ok)
 				reply.result = reply.result.playlist_loop;
 			callback(reply);
@@ -89,56 +90,56 @@ function SqueezePlayer(playerId, name, request_server) {
 	};
 
 	this.play = function (callback) {
-		rs.request(playerId, ["play"], callback);
+		self.rs.request(playerId, ["play"], callback);
 	};
 
 	this.playIndex = function (index, callback) {
 		console.log("index: " + index);
-		rs.request(playerId, ["playlist", "index", index], callback);
+		self.rs.request(playerId, ["playlist", "index", index], callback);
 	};
 
 	this.pause = function (callback) {
-		rs.request(playerId, ["pause"], callback);
+		self.rs.request(playerId, ["pause"], callback);
 	};
 
 	this.next = function (callback) {
-		rs.request(playerId, ["button", "jump_rew"], callback);
+		self.rs.request(playerId, ["button", "jump_rew"], callback);
 	};
 
 	this.previous = function (callback) {
-		rs.request(playerId, ["button", "jump_rew"], callback);
+		self.rs.request(playerId, ["button", "jump_rew"], callback);
 	};
 
 	this.next = function (callback) {
-		rs.request(playerId, ["button", "jump_fwd"], callback);
+		self.rs.request(playerId, ["button", "jump_fwd"], callback);
 	};
 
 	this.playlistDelete = function(index, callback) {
-		rs.request(playerId, ["playlist", "delete", index], callback);
+		self.rs.request(playerId, ["playlist", "delete", index], callback);
 	};
 
 	this.playlistMove = function(fromIndex, toIndex, callback) {
-		rs.request(playerId, ["playlist", "move", fromIndex, toIndex], callback);
+		self.rs.request(playerId, ["playlist", "move", fromIndex, toIndex], callback);
 	};
 
 	this.playlistSave = function(playlistName, callback) {
-		rs.request(playerId, ["playlist", "save", playlistName], callback);
+		self.rs.request(playerId, ["playlist", "save", playlistName], callback);
 	};
 
 	this.sync = function(syncTo, callback) {
-		rs.request(playerId, ["sync", syncTo], callback);
+		self.rs.request(playerId, ["sync", syncTo], callback);
 	};
 
 	this.unSync = function(callback) {
-		rs.request(playerId, ["sync", "-"], callback);
+		self.rs.request(playerId, ["sync", "-"], callback);
 	};
 
 	this.seek = function(seconds, callback) {
-		rs.request(playerId, ["time", seconds], callback);
+		self.rs.request(playerId, ["time", seconds], callback);
 	};
 
 	this.setVolume = function(volume, callback) {
-		rs.request(playerId, ["mixer", "volume", volume], callback);
+		self.rs.request(playerId, ["mixer", "volume", volume], callback);
 	};
 }
 
