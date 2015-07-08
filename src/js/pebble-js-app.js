@@ -221,15 +221,27 @@ function sendMessage() {
 	// also be called if your message send attempt times out.
 }
 
+
 function readyListener(event) {
-	console.log("Ready");
-	squeeze_request = new SqueezeRequest(server_address, server_port);
-	console.log("Request object created");
+	console.log("create server object")
+	Squeeze_server = new SqueezeServer(server_address, server_port,
+		function(pl) {
 
-
-
-	player = new SqueezePlayer("00:04:20:28:99:14", "Squeeze", squeeze_request)
-	console.log("Player object created: " + player);
+			var pa = [];
+			var nb = 0;
+			for (var mac in pl) {
+				pa.push(mac + '\0');
+				pa.push(pl[mac].name + '\0')
+				nb += 1;
+			}
+			pa.unshift(nb);
+			console.log("list: " + pa);
+			console.log("got player list: " + JSON.stringify(pl));
+			// send it to watch
+			Pebble.sendAppMessage({'command': SC_PLAYERS, 'message': pa});
+			// select default player ??
+			//player = Squeeze_server.getSqueezePlayer("00:00:00:12:34:56"); //00:04:20:28:99:14");
+		});
 }
 
 // Called when JS is ready
