@@ -16,11 +16,16 @@ enum {
 };
 
 enum squeeze_cmds {
-	SC_STATUS,
+	SC_STATUS = 1,
 	SC_PLAY,
 	SC_PAUSE,
 	SC_NEXT,
 	SC_PREV,
+	SC_VOL_UP,
+	SV_VOL_DOWN,
+
+	SC_PLAYERS = 10,     // [nb of entries as uint8_t] + nb*[Mac Addr + Name as String ("00:00:00:00:00:00:00", "Name")]
+	SC_SEL_PLAYER,  // Mac Addr as String "00:00:00:00:00:00:00"
 };
 
 

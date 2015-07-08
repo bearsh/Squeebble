@@ -187,6 +187,18 @@ function SqueezeServer(address, port, callback) {
 	});
 }
 
+
+var SC_STATUS     = 1;
+var SC_PLAY       = 2;
+var SC_PAUSE      = 3;
+var SC_NEXT       = 4;
+var SC_PREV       = 5;
+var SC_VOL_UP     = 6;
+var SC_VOL_DOwN   = 7;
+
+var SC_PLAYERS    = 10;
+var SC_SEL_PLAYER = 11;
+
 var server_address = "192.168.11.140";
 var server_port = 9000;
 var squeeze_request = null;
