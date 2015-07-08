@@ -144,6 +144,49 @@ function SqueezePlayer(playerId, name, request_server) {
 }
 
 
+function SqueezeServer(address, port, callback) {
+	this.rs = new SqueezeRequest(address, port);
+	this.players = {};
+	var self = this;
+	var defaultPlayer = ""; //"00:00:00:00:00:00";
+
+	this.getPlayers = function (callback) {
+		self.rs.request(defaultPlayer, ["players",0,100], function (reply) {
+//			console.log("SqueezeServer:getPlayers| repy: " + JSON.stringify(reply));
+			if (reply.ok) {
+				reply.result = reply.result.players_loop;
+//				console.log("SqueezeServer:getPlayers| result: " + JSON.stringify(reply.result));
+			}
+			callback(reply);
+		});
+	};
+
+	this.getSqueezePlayer = function(id) {
+		if (!self.players[id].instance) {
+			self.players[id].instance = new SqueezePlayer(id, self.players[id].name, self.rs);
+		}
+		return self.players[id].instance;
+	}
+
+	// query server for available players
+	self.getPlayers(function(res) {
+		var players = res.result;
+		console.log("SqueezeServer: add following players");
+		for (var pl in players) {
+			console.log("  " + players[pl].name + ":");
+			debugger;
+			if (!self.players[players[pl].playerid]) { // player not on the list
+				console.log("  - add " + players[pl].playerid + " to list");
+				self.players[players[pl].playerid] = {"name": players[pl].name, "instance": null}; // set in list but don't create instance new SqueezePlayer(players[pl].playerid, players[pl].name, self.address, self.port);
+				console.log("    " + JSON.stringify(self.players[players[pl].playerid]));
+			}
+		}
+		if (callback) {
+			callback(self.players);
+		}
+	});
+}
+
 var server_address = "192.168.11.140";
 var server_port = 9000;
 var squeeze_request = null;
