@@ -10,9 +10,19 @@ static GBitmap *bitmap_pause;
 
 // Key values for AppMessage Dictionary
 enum {
-	STATUS_KEY = 0,	
-	MESSAGE_KEY = 1,
-	COMMAND_KEY = 2,
+	STATUS_KEY     = 0,
+	MESSAGE_KEY    = 1,
+	COMMAND_KEY    = 2,
+	// squeeze specific keys
+	S_TRACK_KEY    = 10,
+	S_MODE_KEY     = 11,
+	S_VOLUME_KEY   = 12,
+	S_DURATION_KEY = 13,
+	S_TIME_KEY     = 14,
+	S_ALBUM_KEY    = 15,
+	S_ARTIST_KEY   = 16,
+	S_TITLE_KEY    = 17,
+	s_CTITEL_KEY   = 18,
 };
 
 enum squeeze_cmds {

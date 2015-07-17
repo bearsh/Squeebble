@@ -1,8 +1,18 @@
 {
     "appKeys": {
-        "command": 2,
-        "message": 1,
-        "status": 0
+        "ctitel":   18,
+        "title":    17,
+        "artist":   16,
+        "album":    15,
+        "time":     14,
+        "duration": 13,
+        "volume":   12,
+        "mode":     11,
+        "track":    10,
+    
+        "command":   2,
+        "message":   1,
+        "status":    0
     },
     "capabilities": [
         ""
