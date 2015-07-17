@@ -31,6 +31,16 @@
                 "type": "pbi",
                 "name": "IMG_PAUSE",
                 "file": "pause.png"
+            },
+            {
+                "type": "pbi",
+                "name": "IMG_PREV",
+                "file": "prev.png"
+            },
+                        {
+                "type": "pbi",
+                "name": "IMG_NEXT",
+                "file": "next.png"
             }
         ]
     },
