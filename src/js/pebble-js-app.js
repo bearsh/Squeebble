@@ -18,7 +18,7 @@ function SqueezeRequest(address, port) {
 		}
 	}
 
-	this.request = function (player, params, callback) {
+	this.request = function(player, params, callback) {
 		var p = '["' + player + '",' + JSON.stringify(params) + ']';
 		var data = '{"id":1,"method":"slim.request","params":' + p + '}';
 		console.log('data: ' + data);
@@ -37,32 +37,32 @@ function SqueezePlayer(playerId, name, request_server) {
 	this.rs = request_server;
 	var self = this;
 
-	this.clearPlayList = function (callback) {
+	this.clearPlayList = function(callback) {
 		self.rs.request(playerId, ["playlist", "clear"], callback);
 	};
 
-	this.getMode = function (callback) {
+	this.getMode = function(callback) {
 		self.rs.request(playerId, ["mode", "?"], callback);
 	};
 
-	this.setName = function (name, callback) {
+	this.setName = function(name, callback) {
 		self.rs.request(playerId, ["name", name], callback);
 	};
 
-	this.getName = function (callback) {
+	this.getName = function(callback) {
 		self.rs.request(playerId, ["name", "?"], callback);
 	};
 
-	this.getCurrentTitle = function (callback) {
-		self.rs.request(playerId, ["current_title", "?"], function (reply) {
+	this.getCurrentTitle = function(callback) {
+		self.rs.request(playerId, ["current_title", "?"], function(reply) {
 			if (reply.ok)
 				reply.result = reply.result._current_title;
 			callback(reply);
 		});
 	};
 
-	this.getCurrentRemoteMeta = function (callback) {
-		self.rs.request(playerId, ["status"], function (reply) {
+	this.getCurrentRemoteMeta = function(callback) {
+		self.rs.request(playerId, ["status"], function(reply) {
 			if (reply.ok)
 				reply.result = reply.result.remoteMeta;
 			callback(reply);
@@ -73,36 +73,36 @@ function SqueezePlayer(playerId, name, request_server) {
 		self.rs.request(playerId, ["status"], callback);
 	};
 
-	this.getStatusWithPlaylist = function (from, to, callback) {
-		self.rs.request(playerId, ["status", from, to], function (reply) {
+	this.getStatusWithPlaylist = function(from, to, callback) {
+		self.rs.request(playerId, ["status", from, to], function(reply) {
 			if (reply.ok)
 				reply.result = reply.result;
 			callback(reply);
 		});
 	};
 
-	this.getPlaylist = function (from, to, callback) {
-		self.rs.request(playerId, ["status", from, to], function (reply) {
+	this.getPlaylist = function(from, to, callback) {
+		self.rs.request(playerId, ["status", from, to], function(reply) {
 			if (reply.ok)
 				reply.result = reply.result.playlist_loop;
 			callback(reply);
 		});
 	};
 
-	this.play = function (callback) {
+	this.play = function(callback) {
 		self.rs.request(playerId, ["play"], callback);
 	};
 
-	this.playIndex = function (index, callback) {
+	this.playIndex = function(index, callback) {
 		console.log("index: " + index);
 		self.rs.request(playerId, ["playlist", "index", index], callback);
 	};
 
-	this.pause = function (callback) {
+	this.pause = function(callback) {
 		self.rs.request(playerId, ["pause"], callback);
 	};
 
-	this.next = function (callback) {
+	this.previous = function(callback) {
 		self.rs.request(playerId, ["button", "jump_rew"], callback);
 	};
 
