@@ -148,9 +148,9 @@ function SqueezeServer(address, port, callback) {
 	var self = this;
 	var defaultPlayer = ""; //"00:00:00:00:00:00";
 
-	this.getPlayers = function (callback) {
-		self.rs.request(defaultPlayer, ["players",0,100], function (reply) {
 //			console.log("SqueezeServer:getPlayers| repy: " + JSON.stringify(reply));
+	this.getPlayers = function(callback) {
+		self.rs.request(defaultPlayer, ["players",0,100], function(reply) {
 			if (reply.ok) {
 				reply.result = reply.result.players_loop;
 //				console.log("SqueezeServer:getPlayers| result: " + JSON.stringify(reply.result));

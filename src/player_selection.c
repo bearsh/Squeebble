@@ -43,7 +43,6 @@ static void realloc_items(int32_t nb_to_alloc) {
 	}
 }
 
-
 static void item_select_callback(int index, void *context) {
 	if (index >= psel_num_items)
 		return;
@@ -124,7 +123,6 @@ Window* player_selection_create_window(player_selection_done_callback_t callback
 	psel_user_context = context;
 	return win;
 }
-
 
 const char* player_selection_get_selected_player_mac(void) {
 	return psel_player_mac;
