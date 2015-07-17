@@ -69,8 +69,10 @@ function SqueezePlayer(playerId, name, request_server) {
 		});
 	};
 
-	this.getStatus = function (callback) {
-		self.rs.request(playerId, ["status"], callback);
+	this.getStatus = function(callback) {
+		//self.rs.request(playerId, ['status', '-', 1, 'tags:cgABbehldiqtyrSuoKLNJ'], callback);
+		self.rs.request(playerId, ['status', '-', 1, 'tags:alt'], callback);
+		//self.rs.request(playerId, ["status"], callback);
 	};
 
 	this.getStatusWithPlaylist = function(from, to, callback) {
@@ -106,11 +108,7 @@ function SqueezePlayer(playerId, name, request_server) {
 		self.rs.request(playerId, ["button", "jump_rew"], callback);
 	};
 
-	this.previous = function (callback) {
-		self.rs.request(playerId, ["button", "jump_rew"], callback);
-	};
-
-	this.next = function (callback) {
+	this.next = function(callback) {
 		self.rs.request(playerId, ["button", "jump_fwd"], callback);
 	};
 
