@@ -2,6 +2,10 @@
 #include "player_selection.h"
 #include "song_info.h"
 
+#define TIME_1S     1000U /*ms*/
+
+#define TIME_STATUS_UPDATE   (4*TIME_1S)
+
 static Window* main_window;
 static ActionBarLayer* action_bar;
 static StatusBarLayer *status_bar;
@@ -14,6 +18,7 @@ static GBitmap *bitmap_prev;
 
 static Window* player_selection_window;
 
+static AppTimer* status_update_timer = NULL;
 
 // Key values for AppMessage Dictionary
 enum {
@@ -107,6 +112,12 @@ void send_squeeze_cmd_with_msg_string(enum squeeze_cmds cmd, const char* msg) {
 }
 
 
+static void status_update_timeout(void *data) {
+	// get status info
+	send_squeeze_cmd(SC_STATUS);
+	status_update_timer = NULL;
+}
+
 
 // Called when a message is received from PebbleKitJS
 static void in_received_handler(DictionaryIterator *received, void *context) {
@@ -157,21 +168,32 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 				// check status to see if player selection was successfull
 				if (status != 0) {
 					APP_LOG(APP_LOG_LEVEL_DEBUG, "failed to select player");
+				} else {
+					// get status info
+					send_squeeze_cmd(SC_STATUS);
 				}
 				break;
 			case SC_STATUS:
 				tuple = dict_read_first(received);
+				int32_t time = -1;
+				int32_t duration = -1;
 				while (tuple) {
 					switch (tuple->key) {
 						case S_TRACK_KEY:
 						case S_MODE_KEY:
 						case S_VOLUME_KEY:
+							break;
 						case S_DURATION_KEY:
+							duration = tuple->value->int32;
+							break;
 						case S_TIME_KEY:
+							time = tuple->value->int32;
+							break;
 						case S_ALBUM_KEY:
 							song_info_set_album(tuple->value->cstring);
 							break;
 						case S_ARTIST_KEY:
+							APP_LOG(APP_LOG_LEVEL_DEBUG, "artist: %s", tuple->value->cstring);
 							song_info_set_artist(tuple->value->cstring);
 							break;
 						case S_TITLE_KEY:
@@ -184,6 +206,10 @@ static void in_received_handler(DictionaryIterator *received, void *context) {
 							break;
 					}
 					tuple = dict_read_next(received);
+				}
+				song_info_update_time_duration(time, duration);
+				if (!status_update_timer) {
+					status_update_timer = app_timer_register(TIME_STATUS_UPDATE, status_update_timeout, NULL);
 				}
 				break;
 			default:
@@ -223,7 +249,6 @@ static void button_up_click_handler(ClickRecognizerRef recognizer, void *context
 
 static void button_select_click_handler(ClickRecognizerRef recognizer, void *context) {
 	APP_LOG(APP_LOG_LEVEL_DEBUG, "Button SELECT");
-	send_squeeze_cmd(SC_STATUS);
 	actionbar_set_mode(actionbar_mode + 1);
 }
 
@@ -284,7 +309,6 @@ static void main_window_load(Window *window) {
 
 	GRect b = layer_get_bounds(window_layer);
 	Layer *bla = song_info_layer_create(GRect(0, STATUS_BAR_LAYER_HEIGHT, width, b.size.h - STATUS_BAR_LAYER_HEIGHT));
-	song_info_set_album("hans");
 	layer_add_child(window_layer, bla);
 
 	if (!bluetooth_connection_service_peek()) {
