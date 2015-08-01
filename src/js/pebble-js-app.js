@@ -316,6 +316,9 @@ function appmessageListener(event) {
 				reply.status = 0;
 
 				if (st.result.remote && st.result.remote == 1) {
+					if (st.result.current_title) {
+						reply.ctitel = st.result.current_title;
+					}
 					if (st.result.remoteMeta.title) {
 						reply.title = st.result.remoteMeta.title;
 					}
