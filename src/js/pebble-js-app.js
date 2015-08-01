@@ -377,6 +377,7 @@ function appmessageListener(event) {
 			var mac = event.payload.message;
 			console.log("Cmd set player: '" + mac + "' -> '" + Squeeze_server.players[mac].name + "'");
 			player = Squeeze_server.getSqueezePlayer(mac);
+			Pebble.sendAppMessage({'command': SC_SEL_PLAYER, "status": 0});
 			break;
 		default:
 			console.log("unhandled cmd: " + event.payload.command);
